@@ -89,13 +89,16 @@ find_package(PkgConfig) # pkg_check_modules
 
 set(OPENRAVE_PYTHON_INSTALL_DIR)
 set(USE_PYBIND11_PYTHON3_BINDINGS ON CACHE BOOL "Build OpenRAVE's python bindings with pybind11 in python3 (ON) or python2 (OFF)")
-if(USE_PYBIND11_PYTHON3_BINDINGS)
-  set(PYTHON_EXECUTABLE ${CMAKE_INSTALL_PREFIX}/bin/python3)
-else()
-  set(PYTHON_EXECUTABLE ${CMAKE_INSTALL_PREFIX}/bin/python2)
-endif()
 if( OPT_PYTHON )
-  include(FindPythonInterp)
+  # the below order matters
+  if(USE_PYBIND11_PYTHON3_BINDINGS)
+    set(PYTHON_EXECUTABLE ${CMAKE_INSTALL_PREFIX}/bin/python3)
+  else()
+    set(PYTHON_EXECUTABLE ${CMAKE_INSTALL_PREFIX}/bin/python2)
+  endif()
+  set(PYTHON_EXECUTABLE_BACKUP ${PYTHON_EXECUTABLE}) # backup
+  include(FindPythonInterp) # this messed up ${PYTHON_EXECUTABLE}
+  set(PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE_BACKUP}) # restore
   ## check python
   set(PYTHONLIBS_FOUND FALSE)
   if(USE_PYBIND11_PYTHON3_BINDINGS)
