@@ -883,6 +883,7 @@ if(OPT_PYTHON AND PYTHON_EXECUTABLE)
   # build python bindings, either with pybind11 or Boost.Python
   set(USE_PYBIND11_PYTHON_BINDINGS ON CACHE BOOL "Build OpenRAVE's python bindings with pybind11 (ON) or Boost.Python (OFF)")
   set(PYBIND11_PYTHON_BINDINGS_DEBUG ON)
+  message(STATUS "CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}")
   add_subdirectory(python)
 endif()
 
